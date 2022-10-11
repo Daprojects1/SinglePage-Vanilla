@@ -1,3 +1,7 @@
+import Home from "./views/Home.js"
+import About from "./views/About.js"
+import Settings from './views/Settings.js'
+
 const navigateTo = url => {
     history.pushState(null, null, url)
     router()
@@ -5,9 +9,9 @@ const navigateTo = url => {
 
 const router = async () => {
     const routes = [
-        { path:'/', view:()=>console.log("home")},
-        { path:'/settings', view:()=>console.log('settings')},
-        { path:'/posts', view:()=>console.log("posts")},
+        { path:'/', view: Home},
+        { path:'/settings', view:Settings},
+        { path:'/About', view:About},
     ]
 
     const potentialMatches = routes.map(route => {
@@ -27,9 +31,13 @@ const router = async () => {
         }
     }
     
-    console.log(match.route.view())
+
+    const view =  new match.route.view()
+
+    document.querySelector('#app').innerHTML= await view.getHtml()
 }
 
+window.addEventListener('popstate', router)
 
 document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('click', (e) => {
